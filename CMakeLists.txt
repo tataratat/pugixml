@@ -62,13 +62,13 @@ if (NOT DEFINED CMAKE_MSVC_RUNTIME_LIBRARY)
     MultiThreaded$<$<CONFIG:Debug>:Debug>$<$<NOT:$<BOOL:${PUGIXML_STATIC_CRT}>>:DLL>)
 endif()
 
-if (NOT DEFINED CMAKE_CXX_STANDARD_REQUIRED)
-  set(CMAKE_CXX_STANDARD_REQUIRED ON)
-endif()
+#if (NOT DEFINED CMAKE_CXX_STANDARD_REQUIRED)
+#  set(CMAKE_CXX_STANDARD_REQUIRED ON)
+#endif()
 
-if (NOT DEFINED CMAKE_CXX_STANDARD)
-  set(CMAKE_CXX_STANDARD 11)
-endif()
+#if (NOT DEFINED CMAKE_CXX_STANDARD)
+#  set(CMAKE_CXX_STANDARD 11)
+#endif()
 
 if (PUGIXML_USE_POSTFIX)
   set(CMAKE_RELWITHDEBINFO_POSTFIX _r)
@@ -102,6 +102,7 @@ if (BUILD_SHARED_LIBS)
   add_library(pugixml::shared ALIAS pugixml-shared)
   list(APPEND libs pugixml-shared)
 
+  set_property(TARGET pugixml-shared PROPERTY CXX_STANDARD 11)
   set_property(TARGET pugixml-shared PROPERTY EXPORT_NAME shared)
   target_include_directories(pugixml-shared
     PUBLIC
@@ -126,6 +127,7 @@ if (NOT BUILD_SHARED_LIBS OR PUGIXML_BUILD_SHARED_AND_STATIC_LIBS)
   add_library(pugixml::static ALIAS pugixml-static)
   list(APPEND libs pugixml-static)
 
+  set_property(TARGET pugixml-static PROPERTY CXX_STANDARD 11)
   set_property(TARGET pugixml-static PROPERTY EXPORT_NAME static)
   target_include_directories(pugixml-static
     PUBLIC
@@ -140,6 +142,11 @@ if (NOT BUILD_SHARED_LIBS OR PUGIXML_BUILD_SHARED_AND_STATIC_LIBS)
       ${msvc-rt-mtd-static}
       ${msvc-rt-mt-shared}
       ${msvc-rt-mt-static})
+
+  if(SPLINELIB_BUILD_PUGIXML AND SPLINEPY_BUILD_SPLINELIB)
+    target_compile_options(pugixml-static PRIVATE ${SPLINEPY_FLAGS})
+  endif()
+  
 endif()
 
 if (BUILD_SHARED_LIBS)
