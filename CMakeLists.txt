@@ -143,7 +143,7 @@ if (NOT BUILD_SHARED_LIBS OR PUGIXML_BUILD_SHARED_AND_STATIC_LIBS)
       ${msvc-rt-mt-shared}
       ${msvc-rt-mt-static})
 
-  if(SPLINELIB_BUILD_PUGIXML AND SPLINEPY_BUILD_SPLINELIB)
+  if(BSPLINELIB_BUILD_PUGIXML AND SPLINEPY_BUILD_BSPLINELIB)
     target_compile_options(pugixml-static PRIVATE ${SPLINEPY_FLAGS})
   endif()
   
